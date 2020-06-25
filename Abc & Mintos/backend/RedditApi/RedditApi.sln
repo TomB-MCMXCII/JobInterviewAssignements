@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedditApi.Request", "RedditApi.Request\RedditApi.Request.csproj", "{CE11101E-56DF-4009-94C5-A243982A1D92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedditApi.Console", "RedditApi.Console\RedditApi.Console.csproj", "{C96849A3-3CBF-4B13-8ACB-F59BE87E9958}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE11101E-56DF-4009-94C5-A243982A1D92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE11101E-56DF-4009-94C5-A243982A1D92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE11101E-56DF-4009-94C5-A243982A1D92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE11101E-56DF-4009-94C5-A243982A1D92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C96849A3-3CBF-4B13-8ACB-F59BE87E9958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C96849A3-3CBF-4B13-8ACB-F59BE87E9958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C96849A3-3CBF-4B13-8ACB-F59BE87E9958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C96849A3-3CBF-4B13-8ACB-F59BE87E9958}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {344C1B0B-71A4-4C3C-9404-B42EFA7A098B}
+	EndGlobalSection
+EndGlobal
