@@ -16,6 +16,10 @@ namespace RedditApi.Request
         private HttpClient _client;
         private string _baseUrl = "https://oauth.reddit.com";
         private string _accessTokenUrl = "https://www.reddit.com/api/v1/access_token";
+        readonly string grantType = "client_credentials";
+        readonly string clientId = "pjUKPH9q5oI13w";
+        readonly string clientSecret = "NjqFq-T1F8Ba6gn-9zZta9Od82I";
+
         public RedditRequestService(HttpClient client)
         {
             _client = client;
@@ -24,25 +28,30 @@ namespace RedditApi.Request
 
         public async Task<Token> GetToken()
         {
-            string grant_type = "client_credentials";
-            string client_id = "pjUKPH9q5oI13w";
-            string client_secret = "NjqFq-T1F8Ba6gn-9zZta9Od82I";
-            var client = new WebClient();
+            var basicAuthHeader = Convert.ToBase64String(Encoding.Default.GetBytes(clientId + ":" + clientSecret));
+            _client.DefaultRequestHeaders.Add("Authorization", "Basic " + basicAuthHeader);
 
-            var basicAuthHeader = Convert.ToBase64String(Encoding.Default.GetBytes(client_id + ":" + client_secret));
-            client.Headers[HttpRequestHeader.Authorization] = "Basic " + basicAuthHeader;
+            var postData = new List<KeyValuePair<string, string>>();
+            postData.Add(new KeyValuePair<string, string>("grant_type", grantType));
+            FormUrlEncodedContent content = new FormUrlEncodedContent(postData);
 
-            var postData = new NameValueCollection();
-            postData.Add("grant_type", grant_type);
 
-            var responseBytes = client.UploadValues(_accessTokenUrl, "POST", postData);
-            var responseString = Encoding.Default.GetString(responseBytes);
-            var response = JsonConvert.DeserializeObject<dynamic>(responseString);
+            var responseMessage = await _client.PostAsync(_accessTokenUrl, content);
+            var responseContentTask = responseMessage.Content.ReadAsStringAsync();
+            responseContentTask.Wait();
 
-            var accessToken = response.access_token.ToString();
-            return new Token();
+            var responseString = responseContentTask.Result;
+            var response = JsonConvert.DeserializeObject<Token>(responseString);
+
+            return new Token() 
+            {
+                AccessToken = response.AccessToken.ToString(),
+                ExpiresIn = response.ExpiresIn.ToString(),
+                TokenType = response.TokenType.ToString(),
+                TimeTokenRecieved = DateTime.Now
+            };
         }
-        public async void GetBestThreads()
+        public async void GetBestThreads(Token token)
         {
             
         }
@@ -51,5 +60,6 @@ namespace RedditApi.Request
         {
 
         }
+
     }
 }

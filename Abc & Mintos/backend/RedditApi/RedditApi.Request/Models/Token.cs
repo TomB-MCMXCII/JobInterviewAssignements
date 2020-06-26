@@ -5,13 +5,29 @@ using System.Text;
 
 namespace RedditApi.Request.Models
 {
-    public class Token
+    public class Token : IDisposable
     {
         [JsonProperty("access_token")]
-        string AccessToken { get; set; }
+        public string AccessToken { get; set; }
         [JsonProperty("token_type")]
-        string TokenType { get; set; }
+        public string TokenType { get; set; }
         [JsonProperty("expires_in")]
-        string ExpiresIn { get; set; }
+        public string ExpiresIn { get; set; }
+        public DateTime TimeTokenRecieved { get; set; }
+        public bool isExpired { get; set; }
+
+        public void Dispose()
+        {
+            Dispose();
+        }
+
+        public void hasExpired()
+        {
+            if(TimeTokenRecieved.AddHours(1) < DateTime.Now)
+            {
+                isExpired = true;
+                Dispose();
+            }
+        }
     }
 }
