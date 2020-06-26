@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RedditApi.Request;
 
 namespace RedditApi.WebApi
 {
@@ -26,6 +27,9 @@ namespace RedditApi.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddHttpClient<IRedditRequestService, RedditRequestService>();
+            //services.AddTransient<IRedditRequestService, RedditRequestService>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\RedditApi.Request\RedditApi.Request.csproj" />
   </ItemGroup>
 
 
