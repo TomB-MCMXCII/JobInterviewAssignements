@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace RedditApi.Request
 {
-    public interface IRedditRequestService
+    public interface IRedditClientService
     {
         Task GetBestThreads();
         Task GetToken();
-        Task GetComments();
+        Task GetThreadComments(Thread thread);
     }
 }

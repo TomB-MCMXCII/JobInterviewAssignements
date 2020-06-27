@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace RedditApi.Request
 {
-    public class RedditRequestService : IRedditRequestService
+    public class RedditClientService : IRedditClientService
     {
         private IHttpClientFactory _clientFactory;
         private string _baseUrl = "https://oauth.reddit.com";
@@ -20,9 +20,10 @@ namespace RedditApi.Request
         readonly string clientId = "pjUKPH9q5oI13w";
         readonly string clientSecret = "NjqFq-T1F8Ba6gn-9zZta9Od82I";
         private List<Thread> threads { get; set; }
+        private List<ThreadDto> threadDtos { get; set; }
         private Token token { get; set; }
 
-        public RedditRequestService(IHttpClientFactory clientFactory)
+        public RedditClientService(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory; 
         }
@@ -56,6 +57,7 @@ namespace RedditApi.Request
                 };
             //}
         }
+
         public async Task GetBestThreads()
         {
             var client = _clientFactory.CreateClient();
@@ -69,9 +71,9 @@ namespace RedditApi.Request
             responseContentTask.Wait();
 
             var responseString = responseContentTask.Result;
-            threads = ParseJsonToThreads(responseString);
-            
+            threads = ParseJsonToThreads(responseString);        
         } 
+
         public List<Thread> ParseJsonToThreads(string responseString)
         {
             var parsedThreads = new List<Thread>();
@@ -86,19 +88,30 @@ namespace RedditApi.Request
 
             return parsedThreads;
         }
-        public async Task GetComments()
+
+        public async Task GetThreadComments(Thread thread)
         {
-            var parsedComments = new List<Comment>();
+            var parsedComments = new List<string>();
             var client = _clientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", "bearer " + token.AccessToken);
             client.DefaultRequestHeaders.Add("User-Agent", "MyWebApi");
 
-            var responseMessage = await client.GetAsync($"https://oauth.reddit.com/r/{threads[0].subreddit}/comments/{threads[0].id}");
+            var responseMessage = await client.GetAsync($"https://oauth.reddit.com/r/{thread.subreddit}/comments/{thread.id}?limit=5");
 
             var responseContentTask = responseMessage.Content.ReadAsStringAsync();
             responseContentTask.Wait();
 
             var responseString = responseContentTask.Result;
+
+        }
+
+        public void CreateThreadDto(Thread thread,List<string> comments)
+        {
+            var threadDto = new ThreadDto();
+            threadDto.title = thread.title;
+            threadDto.comments = comments;
+
+            threadDtos.Add( threadDto);
         }
 
     }
