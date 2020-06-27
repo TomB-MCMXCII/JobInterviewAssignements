@@ -14,19 +14,22 @@ namespace RedditApi.Request.Models
         [JsonProperty("expires_in")]
         public string ExpiresIn { get; set; }
         public DateTime TimeTokenRecieved { get; set; }
-        public bool isExpired { get; set; }
 
         public void Dispose()
         {
             Dispose();
         }
 
-        public void hasExpired()
+        public bool hasExpired()
         {
             if(TimeTokenRecieved.AddHours(1) < DateTime.Now)
             {
-                isExpired = true;
                 Dispose();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

@@ -5,7 +5,7 @@ namespace RedditApi.Request
 {
     public interface IRedditRequestService
     {
-        void GetBestThreads(Token token);
-        Task<Token> GetToken();
+        void GetBestThreads();
+        Task GetToken();
     }
 }
