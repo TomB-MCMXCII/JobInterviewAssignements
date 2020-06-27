@@ -4,8 +4,8 @@ using System.Text;
 
 namespace RedditApi.Request.Models
 {
-    public class Comment
+    public class Dto
     {
-        public string text { get; set; }
+        public Thread[] threads { get; set; }
     }
 }

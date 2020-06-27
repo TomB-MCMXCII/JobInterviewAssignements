@@ -22,7 +22,8 @@ namespace RedditApi.WebApi.Controllers
         public IActionResult GetBestThreads()
         {
             _redditRequestService.GetToken().Wait();
-            _redditRequestService.GetBestThreads();
+            _redditRequestService.GetBestThreads().Wait();
+            _redditRequestService.GetComments();
             return Ok();
         }
     }

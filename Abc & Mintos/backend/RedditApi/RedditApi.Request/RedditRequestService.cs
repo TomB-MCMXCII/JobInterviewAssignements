@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RedditApi.Request.Models;
-using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -9,7 +8,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using static RedditApi.Request.Models.Thread;
 
 namespace RedditApi.Request
 {
@@ -21,6 +19,7 @@ namespace RedditApi.Request
         readonly string grantType = "client_credentials";
         readonly string clientId = "pjUKPH9q5oI13w";
         readonly string clientSecret = "NjqFq-T1F8Ba6gn-9zZta9Od82I";
+        private List<Thread> threads { get; set; }
         private Token token { get; set; }
 
         public RedditRequestService(IHttpClientFactory clientFactory)
@@ -57,27 +56,23 @@ namespace RedditApi.Request
                 };
             //}
         }
-        public async void GetBestThreads()
+        public async Task GetBestThreads()
         {
             var client = _clientFactory.CreateClient();
 
             client.DefaultRequestHeaders.Add("Authorization", "bearer " + token.AccessToken);
             client.DefaultRequestHeaders.Add("User-Agent", "MyWebApi");
-            //_client.BaseAddress = new Uri(_baseUrl);
+
             var responseMessage = await client.GetAsync("https://oauth.reddit.com/best?limit=5");
 
             var responseContentTask = responseMessage.Content.ReadAsStringAsync();
             responseContentTask.Wait();
 
             var responseString = responseContentTask.Result;
-            Parse(responseString);
-            //var data = JObject.Parse(responseString).SelectToken("data").ToString();
-
-            //var vkUsers = JsonConvert.DeserializeObject<Data>(data);
-            //var threads = JsonConvert.DeserializeObject<Rootobject>(responseString).data.children;
+            threads = ParseJsonToThreads(responseString);
             
-        }
-        public List<Thread> Parse(string responseString)
+        } 
+        public List<Thread> ParseJsonToThreads(string responseString)
         {
             var parsedThreads = new List<Thread>();
 
@@ -91,9 +86,19 @@ namespace RedditApi.Request
 
             return parsedThreads;
         }
-        private async void GetTopFiveComments()
+        public async Task GetComments()
         {
+            var parsedComments = new List<Comment>();
+            var client = _clientFactory.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", "bearer " + token.AccessToken);
+            client.DefaultRequestHeaders.Add("User-Agent", "MyWebApi");
 
+            var responseMessage = await client.GetAsync($"https://oauth.reddit.com/r/{threads[0].subreddit}/comments/{threads[0].id}");
+
+            var responseContentTask = responseMessage.Content.ReadAsStringAsync();
+            responseContentTask.Wait();
+
+            var responseString = responseContentTask.Result;
         }
 
     }

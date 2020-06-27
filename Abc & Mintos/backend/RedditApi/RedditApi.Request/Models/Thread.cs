@@ -10,5 +10,6 @@ namespace RedditApi.Request.Models
     {
         public string title { get; set; }
         public string id { get; set; } 
+        public string subreddit { get; set; }
     }
 }
