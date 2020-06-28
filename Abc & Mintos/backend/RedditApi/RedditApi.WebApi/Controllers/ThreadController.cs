@@ -21,7 +21,6 @@ namespace RedditApi.WebApi.Controllers
         [Route("api/thread/get")]
         public IActionResult GetBestThreads()
         {
-            _redditRequestService.GetToken().Wait();
             _redditRequestService.GetBestThreads().Wait();
 
             return Ok();

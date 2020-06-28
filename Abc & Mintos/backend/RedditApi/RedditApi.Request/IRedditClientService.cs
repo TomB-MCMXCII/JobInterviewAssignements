@@ -6,7 +6,7 @@ namespace RedditApi.Request
     public interface IRedditClientService
     {
         Task GetBestThreads();
-        Task GetToken();
-        Task GetThreadComments(Thread thread);
+        void GetToken();
+        void GetThreadComments();
     }
 }
