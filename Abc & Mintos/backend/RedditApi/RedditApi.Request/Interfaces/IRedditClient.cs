@@ -7,6 +7,6 @@ namespace RedditApi.Request
     {
         Task<Token> GetToken();
         Task<string> GetBestThreads(Token token,int count);
-        Task GetThreadComments(Thread thread,Token token);
+        Task<string> GetThreadComments(Thread thread,Token token,int count);
     }
 }

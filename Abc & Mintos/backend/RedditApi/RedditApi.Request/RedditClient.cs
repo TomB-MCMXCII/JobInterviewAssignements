@@ -55,7 +55,7 @@ namespace RedditApi.Request
             client.DefaultRequestHeaders.Add("Authorization", "bearer " + token.AccessToken);
             client.DefaultRequestHeaders.Add("User-Agent", "MyWebApi");
 
-            var responseMessage = await client.GetAsync("https://oauth.reddit.com/best?limit=5");
+            var responseMessage = await client.GetAsync($"https://oauth.reddit.com/best?limit={count}");
 
             var responseContentTask = responseMessage.Content.ReadAsStringAsync();
             responseContentTask.Wait();
@@ -64,19 +64,19 @@ namespace RedditApi.Request
             
         }
 
-        public async Task GetThreadComments(Thread thread,Token token)
+        public async Task<string> GetThreadComments(Thread thread,Token token,int count)
         {
             var parsedComments = new List<string>();
             var client = _httpClientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", "bearer " + token.AccessToken);
             client.DefaultRequestHeaders.Add("User-Agent", "MyWebApi");
 
-            var responseMessage = await client.GetAsync($"https://oauth.reddit.com/r/{thread.subreddit}/comments/{thread.id}?limit=5");
+            var responseMessage = await client.GetAsync($"https://oauth.reddit.com/r/{thread.subreddit}/comments/{thread.id}?limit={count}");
 
             var responseContentTask = responseMessage.Content.ReadAsStringAsync();
             responseContentTask.Wait();
 
-            var responseString = responseContentTask.Result;
+            return responseContentTask.Result;
 
         }
     }

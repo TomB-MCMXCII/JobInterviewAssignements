@@ -28,7 +28,7 @@ namespace RedditApi.WebApi
         {
             services.AddControllers();
             services.AddHttpClient();
-            services.AddTransient<IRedditClientService, RedditClientService>();
+            services.AddTransient<IThreadsService, ThreadsService>();
             services.AddTransient<IRedditClient, RedditClient>();
             
         }

@@ -12,8 +12,8 @@ namespace RedditApi.WebApi.Controllers
     [ApiController]
     public class ThreadController : ControllerBase
     {
-        private IRedditClientService _redditRequestService;
-        public ThreadController(IRedditClientService redditRequestService)
+        private IThreadsService _redditRequestService;
+        public ThreadController(IThreadsService redditRequestService)
         {
             _redditRequestService = redditRequestService;
         }
@@ -21,9 +21,9 @@ namespace RedditApi.WebApi.Controllers
         [Route("api/thread/get")]
         public IActionResult GetBestThreads()
         {
-            _redditRequestService.GetBestThreads().Wait();
+            var threadsDto = _redditRequestService.GetThreadDtos();
 
-            return Ok();
+            return Ok(threadsDto);
         }
     }
 }
