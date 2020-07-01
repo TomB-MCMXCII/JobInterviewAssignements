@@ -12,16 +12,16 @@ namespace RedditApi.WebApi.Controllers
     [ApiController]
     public class ThreadController : ControllerBase
     {
-        private IThreadsService _redditRequestService;
-        public ThreadController(IThreadsService redditRequestService)
+        private IThreadsService _threadsService;
+        public ThreadController(IThreadsService threadsService)
         {
-            _redditRequestService = redditRequestService;
+            _threadsService = threadsService;
         }
         [HttpGet]
         [Route("api/thread/get")]
         public IActionResult GetBestThreads()
         {
-            var threadsDto = _redditRequestService.GetThreadDtos();
+            var threadsDto = _threadsService.GetThreadDtos();
 
             return Ok(threadsDto);
         }
