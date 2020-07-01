@@ -1,5 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This project fetches data from  https://countries.trevorblades.com/ using graphql.The data is a list of countries. 
+Upon successfull fetch the countries are shown as a list. Clicking on one of the countries another request is sent to fetch additional info.
+
 ## Available Scripts
 
 In the project directory, you can run:
