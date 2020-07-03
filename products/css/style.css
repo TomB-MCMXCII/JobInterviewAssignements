@@ -1,0 +1,18 @@
+.saveBtnContainer {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.saveBtn {
+  float: right;
+  top: 50%;
+}
+
+.header {
+  border-bottom: 1px black;
+}
+/*# sourceMappingURL=style.css.map */
