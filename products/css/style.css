@@ -1,4 +1,22 @@
 .saveBtnContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.saveBtn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 30%;
+  width: 20%;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -7,12 +25,50 @@
           justify-content: center;
 }
 
-.saveBtn {
-  float: right;
-  top: 50%;
+.header {
+  border-bottom: 1px solid black;
+  height: 10%;
 }
 
-.header {
-  border-bottom: 1px black;
+.formContainer {
+  margin-top: 2%;
+  width: 30%;
+}
+
+.title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#specialAttribute {
+  border: 2px solid black;
+  padding: 10px;
+  min-height: 15rem;
+}
+
+label {
+  width: 15%;
+  text-align: left;
+  margin-top: 5%;
+}
+
+#typeLabel {
+  width: 30%;
+}
+
+#productType {
+  width: 30%;
+}
+
+.description {
+  font-weight: 400;
+}
+
+#typeError {
+  color: red;
 }
 /*# sourceMappingURL=style.css.map */

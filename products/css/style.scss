@@ -1,11 +1,47 @@
 .saveBtnContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+.saveBtn {
+    display: flex;
+    height: 30%;
+    width: 20%;
     align-items: center;
     justify-content: center;
 }
-.saveBtn {
-    float: right;
-    top:50%;
-}
 .header {
-    border-bottom: 1px black;
+    border-bottom: 1px solid black;
+    height: 10%;
+}
+.formContainer {
+    margin-top: 2%;
+    width: 30%;
+}
+.title {
+    display: flex;
+    align-items: center;
+}
+#specialAttribute {
+    border: 2px solid black;
+    padding: 10px;
+    min-height: 15rem;
+}
+label {
+    width:15%;
+    text-align: left;
+    margin-top: 5%;
+    
+}
+#typeLabel {
+    width: 30%;
+}
+#productType {
+    width: 30%;
+}
+.description {
+    font-weight: 400;
+}
+#typeError {
+    color: red;
 }
