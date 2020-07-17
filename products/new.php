@@ -1,14 +1,34 @@
 <?php
 require_once('Models/Product.php');
-require_once("database.php");
 
 if(!isset($_GET["f"])){
     index();
-}else if($_GET["f"] == "newProduct" && isset($_POST)){
+}else if($_GET["f"] == "addProduct" && isset($_POST)){
+    addProduct();   
+}else if($_GET["f"] == "skuExists"){
+    skuExists();
+}
+
+
+function skuExists(){
+    $skuValidationData = $_POST["myData"];
+
+    $productType = createProductType($skuValidationData);
+
+    if($productType->FindBySku($skuValidationData) == false){    
+        echo "0";
+    }
+    //if product with given sku does exist
+    else{
+        echo "1";
+    }       
+}
+
+function addProduct(){
     $data = $_POST;
-    $db = new Database();
-    $productObject = createProduct($data);
-    $db->insert($productObject);
+    $productType = createProductType($data);
+    
+    $productType->insert($data);
     require_once "Views/newView.php";
 }
 
@@ -16,22 +36,22 @@ function index(){
     require_once "Views/newView.php";
 }
 
-function createProduct($data){
+function createProductType($data){
     $objectFactory = [
-        "furniture" => function ($data) {
+        "furniture" => function () {
             require_once('Models/Furniture.php');
-            return new Furniture($data["sku"],$data["name"],$data["price"],$data["height"],$data["width"],$data["length"]);
+            return new Furniture();
          },
-         "book" => function($product) {
+         "book" => function() {
             require_once('Models/Book.php');
-            return new Book($data["sku"],$data["name"],$data["price"],$data["weight"]);
+            return new Book();
          },
-         "cd" => function($product) {
+         "cd" => function() {
             require_once('Models/CompactDisc.php');
-             return new CompactDisc($data["sku"],$data["name"],$data["price"],$data["size"]);
+             return new CompactDisc();
          }
       ];
-    $productObject = $objectFactory[$product["type"]]($product);
+    $productObject = $objectFactory[$data["type"]]();
     return $productObject;
 }
 

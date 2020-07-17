@@ -16,24 +16,24 @@
                     <h1>Product Add</h1>
                 </div>
                 <div style="padding: 0;" class="col saveBtnContainer">
-                    <button form="newProductForm" class="saveBtn">Save</button>
+                    <button form="newProductForm" id="save" class="saveBtn">Save</button>
                 </div>
         </div>
         <div style="margin: auto;" class="row">
             <div class="formContainer">
-                <form id="newProductForm" action="new?f=newProduct" onsubmit="return validate()" method="POST">
-                    <label for="sku">SKU</label> <input type="text" name="sku" id="sku" required> <br>
-                    <label for="name">Name</label> <input type="text" name="name" id="name" required> <br>
-                    <label for="price">Price</label> <input type="number" step="0.01" name="price" id="price" required> <br>
+                 <form id="newProductForm" action="new?f=addProduct" onsubmit="return validate()" method="POST"> 
+                    <label for="sku">SKU</label> <input type="text" name="sku" id="sku" required > <span id="skuError"></span><br>
+                    <label for="name">Name</label> <input type="text" name="name" id="name" required > <br>
+                    <label for="price">Price</label> <input type="number" step="0.01" name="price" id="price" required value=""> <br>
                     <label for="type" id="typeLabel" class="typeLabel">Type Switcher :</label>
-                    <select id="productType" name="type" onchange="setTypeForm(this.value)">
+                    <select id="productType" name="type" onchange="setTypeForm(this.value)"> 
                         <option value="noType">Type switcher</option>
                         <option value="furniture">Furniture</option>
                         <option value="book">Book</option>
                         <option value="cd">CD</option>
-                    </select>
+                    </select> 
                     <div id="specialAttribute">
-                    <p id="typeError"></p>
+                    <span id="typeError"></span>
                     </div>
                 </form>
             </div>
@@ -45,9 +45,9 @@
     const setTypeForm = (value) =>  {
         document.getElementById('specialAttribute').innerHTML = specialAttribute[value];
     }
-
+    
     const specialAttribute = { 
-        "noType":    "",
+        "noType":    "<span id=\"typeError\"></span> ",
 
         "furniture":    "<label for=\"height\">Height:</label>" + "<input type=\"number\" name=\"height\" step=\"0.01\" required/><br>" + 
                         "<label for=\"width\">Width:</label>" + "<input type=\"number\" name=\"width\" step=\"0.01\" required/><br>" +
@@ -60,21 +60,57 @@
         "cd":    "<label for=\"size\">Size:</label>" + "<input type=\"number\" name=\"size\" required/><br>" +
                 "<p class=\"description\">Please provide size in megabytes.</p>",
     }
-
+   
     function validate(){
-        
         var productType = document.querySelector('#productType option:checked').value;
         var sku = document.forms["newProductForm"]["sku"].value;
-        var name = document.forms["newProductForm"]["name"].value;
-        var price = document.forms["newProductForm"]["price"].value;
-
-        if(productType === "noType"){
-             var p = document.getElementById("typeError");
-             var text = document.createTextNode("Please select a product type");
-             p.appendChild(text);
+        var data = {type: productType, sku: sku};
+        if(productType == "noType"){
+            showNoTypeError();
             return false;
+        }else{ 
+            $.ajax({
+                url : "new?f=skuExists",
+                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                type: "POST",
+                data : {myData:data},
+                success: function(responseData, textStatus, jqXHR)
+                {
+                    
+                    if(responseData == 1){
+                        showSkuExistsError();
+                    }
+                    else if(responseData == 0){
+                                            
+                        document.getElementById("newProductForm").submit();    
+                    }  
+                },
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    console.log(errorThrown);  
+                }
+            });
         }
-        
+        return false;
+    }
+
+    function showNoTypeError(){ 
+        var p = document.getElementById("typeError");
+            
+        if(p.innerText == ""){
+            var text = document.createTextNode("Please select a product type");
+            p.appendChild(text);
+        }
+    }
+
+    function showSkuExistsError(){
+        var span = document.getElementById("skuError");
+
+        if(span.innerText == "")
+        {
+            var text = document.createTextNode("A product with this sku allready exists");
+            span.appendChild(text);
+        }  
     }
 </script>
 

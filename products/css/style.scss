@@ -16,19 +16,36 @@
 }
 .formContainer {
     margin-top: 2%;
-    width: 30%;
+    width: 50%;
 }
 .title {
     display: flex;
     align-items: center;
 }
+
+.item {
+    border: 1px solid black;
+    height:12rem;
+}
+.bookRow {
+    margin-top: 2%!important;
+}
+.cdRow {
+    margin-top: 2%!important;
+}
+.furnitureRow {
+    margin-top: 2%!important;
+}
 #specialAttribute {
     border: 2px solid black;
     padding: 10px;
-    min-height: 15rem;
+    height: 15rem;
+    width: 70%;
+    padding-left: 2rem;
+    margin-top: 5%;
 }
 label {
-    width:15%;
+    width:18%;
     text-align: left;
     margin-top: 5%;
     
@@ -44,4 +61,23 @@ label {
 }
 #typeError {
     color: red;
+    padding-left: 5%;
+}
+#skuError {
+    color: red;
+    padding-left: 5%;
+}
+#sku {
+    text-transform: uppercase;
+}
+.colMargin {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.checkBoxWrapper{
+    margin-top: 2%;
+}
+.itemContentRow {
+    flex-flow: column;
+    align-items: center;
 }

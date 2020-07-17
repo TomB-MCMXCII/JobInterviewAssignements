@@ -3,36 +3,44 @@ class Database{
         private $servername = "127.0.0.1";
         private $username = "root";
         private $password = "";
-        
+        private $count = 0;
     public function __construct()
     {
-        // Create connection
         $conn = new mysqli($this->servername, $this->username, $this->password);
-        // Check connection
+
         if ($conn->connect_error) {
         //die("Connection failed: " . $conn->connect_error);
         }
 
-        // Create Products database
         $sql = "CREATE DATABASE IF NOT EXISTS Products";
         if ($conn->query($sql) === TRUE) {
-        //echo "Database created successfully ";
+        
         } else {
-        //echo "Error creating database: " . $conn->error;
+        
         }
         $this->createTables($conn);
         $conn->close();
     }
 
-    function insert($product){
+    public function Insert($table,$data){
         $conn = new mysqli($this->servername, $this->username, $this->password);
-        
-        $stmt = $this->createInsertQuery($product,$conn);
+        $columns = array_keys($data);
 
-        if ($stmt->execute() === TRUE) {
-            return true;
+        $values = array();
+        $paramTypes = array();
+        foreach($columns as $c){ 
+            $values[] = "?";
+            $paramTypes[] = "s";
+        }
+
+        $stmt = $conn->prepare("INSERT INTO Products.". $table . " (" . implode(",", $columns) .") VALUES (". implode(",",$values) .")");
+
+        $stmt->bind_param("". implode("", $paramTypes) ."", ...array_values($data) );
+
+        if ($stmt->execute() === true) {
+                
             } else {
-            return false;
+                
             }
         
         $stmt->close();
@@ -40,31 +48,86 @@ class Database{
         
     }
 
-    function createInsertQuery($product,$conn){
+    public function Find($table,$value){
+        $columns = $this->GetTableColumns($table);
 
-        switch(true){
-            case $product instanceof Furniture :
-                $stmt = $conn->prepare("INSERT INTO Products.Furniture (sku, name, price, width, height, length)
-                VALUES (?,?,?,?,?,?)");
-                $stmt->bind_param("ssssss", $product->sku, $product->name, $product->price, $product->width, $product->height, $product->length);
-                return $stmt;
-                break;
-            case $product instanceof Book : 
-                $stmt = $conn->prepare("INSERT INTO Products.Books (sku, name, price, weight)
-                VALUES (?,?,?,?)");
-                $stmt->bind_param("ssss", $product->sku, $product->name, $product->price, $product->weight);
-                return $stmt;
-                break;
-            case $product instanceof CompactDisc :
-                $stmt = $conn->prepare("INSERT INTO Products.CompactDiscs (sku, name, price, size)
-                VALUES (?,?,?,?)");
-                $stmt->bind_param("ssss", $product->sku, $product->name, $product->price, $product->size);
-                return $stmt;
-                break;
+        $conn = new mysqli($this->servername, $this->username, $this->password);
+        $result = $conn->query("SELECT * FROM Products.". $table . " WHERE '$value' IN (". implode(",",$columns).")");
+
+        if($result->num_rows > 0){
+            return true;
         }
+        else {
+            return false;
+        } 
     }
 
-    function createTables($conn){
+    public function GetTableData($table){
+        $conn = new mysqli($this->servername, $this->username, $this->password);
+        $sql = "SELECT * FROM Products.". $table ."";
+
+        $result = $conn->query($sql);
+        while($row = $result->fetch_assoc()){
+            $rows[] = $row;
+            if(count($rows) == 4){
+                return $rows;
+            }
+        }
+        if(!isset($rows)){
+            return $rows = array();
+        }
+        return $rows;
+    }
+
+    public function GetTableColumns($table){
+        $conn = new mysqli($this->servername, $this->username, $this->password);
+        $sql = "SELECT COLUMN_NAME
+        FROM INFORMATION_SCHEMA.COLUMNS
+        WHERE TABLE_SCHEMA='Products'
+            AND TABLE_NAME='$table'";
+        
+        $result = $conn->query($sql);
+        while($row = $result->fetch_assoc()){
+            $columns[] = $row['COLUMN_NAME'];
+        }
+        
+        return $columns;
+
+    }
+    public function GetTableKeyColumnName($table){
+        $conn = new mysqli($this->servername, $this->username, $this->password);
+        $sql = "SELECT COLUMN_NAME 
+        FROM information_schema.KEY_COLUMN_USAGE 
+        WHERE TABLE_NAME = '$table' 
+        AND CONSTRAINT_NAME = 'PRIMARY'";
+        $result = $conn->query($sql);
+        $column = $result->fetch_assoc();
+        return $column["COLUMN_NAME"];    
+    }
+
+    public function DeleteByKey($table,$id)
+    { 
+        
+        $key = $this->GetTableKeyColumnName($table);
+            
+        $this->count = $this->count + 1; 
+
+        $conn = new mysqli($this->servername, $this->username, $this->password);
+        $stmt = $conn->prepare("DELETE FROM Products.". $table . " WHERE ". $key ." = ? ");
+        
+        $stmt->bind_param("i", intval($id));
+        
+        if ($stmt->execute() === true) {
+                
+        } else {
+            
+        }
+    
+    $stmt->close();
+    $conn->close();
+
+    }
+    public function createTables($conn){
         //create furniture table
         $furnitureTable = "CREATE TABLE IF NOT EXISTS Products.Furniture (
             id int key AUTO_INCREMENT,
