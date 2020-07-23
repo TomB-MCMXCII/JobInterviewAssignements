@@ -24,7 +24,8 @@ function index(){
     require_once "Views/listView.php";
 }
 
-function massDelete($data){
+function massDelete($data)
+{
     if(isset($data["books"])){
         deleteBooks($data["books"]);
     }
@@ -36,21 +37,24 @@ function massDelete($data){
     }
 }
 
-function deleteBooks($books){
+function deleteBooks($books)
+{
     $book = new Book();
     foreach($books as $key=>$value){
         $book->DeleteById($value);
     }
 }
 
-function deleteFurniture($furnitures){
+function deleteFurniture($furnitures)
+{
     $furniture = new Furniture();
     foreach($furnitures as $key=>$value){
         $furniture->DeleteById($value);
     }
 }
 
-function deleteCds($cds){
+function deleteCds($cds)
+{
     $cd = new CompactDisc();
     foreach($cds as $key=>$value){
         $cd->DeleteById($value);

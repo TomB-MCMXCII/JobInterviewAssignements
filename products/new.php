@@ -1,16 +1,20 @@
 <?php
 require_once('Models/Product.php');
 
-if(!isset($_GET["f"])){
+if(!isset($_GET["f"]))
+{
     index();
-}else if($_GET["f"] == "addProduct" && isset($_POST)){
-    addProduct();   
-}else if($_GET["f"] == "skuExists"){
+}else if($_GET["f"] == "addProduct" && isset($_POST))
+{
+    addProduct($_POST);   
+}else if($_GET["f"] == "skuExists")
+{
     skuExists();
 }
 
 
-function skuExists(){
+function skuExists()
+{
     $skuValidationData = $_POST["myData"];
 
     $productType = createProductType($skuValidationData);
@@ -24,19 +28,21 @@ function skuExists(){
     }       
 }
 
-function addProduct(){
-    $data = $_POST;
+function addProduct($data)
+{
     $productType = createProductType($data);
     
     $productType->insert($data);
     require_once "Views/newView.php";
 }
 
-function index(){
+function index()
+{
     require_once "Views/newView.php";
 }
 
-function createProductType($data){
+function createProductType($data)
+{
     $objectFactory = [
         "furniture" => function () {
             require_once('Models/Furniture.php');

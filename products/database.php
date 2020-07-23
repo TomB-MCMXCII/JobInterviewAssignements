@@ -1,9 +1,11 @@
 <?php
-class Database{
-        private $servername = "127.0.0.1";
-        private $username = "root";
-        private $password = "";
-        private $count = 0;
+class Database
+{
+    private $servername = "127.0.0.1";
+    private $username = "root";
+    private $password = "";
+    private $dbName = "Products";
+
     public function __construct()
     {
         $conn = new mysqli($this->servername, $this->username, $this->password);
@@ -12,7 +14,7 @@ class Database{
         //die("Connection failed: " . $conn->connect_error);
         }
 
-        $sql = "CREATE DATABASE IF NOT EXISTS Products";
+        $sql = "CREATE DATABASE IF NOT EXISTS $this->dbName";
         if ($conn->query($sql) === TRUE) {
         
         } else {
@@ -21,8 +23,9 @@ class Database{
         $this->createTables($conn);
         $conn->close();
     }
-
-    public function Insert($table,$data){
+    // Inserts a single record given table and
+    public function insert($table,$data)
+    {
         $conn = new mysqli($this->servername, $this->username, $this->password);
         $columns = array_keys($data);
 
@@ -33,7 +36,7 @@ class Database{
             $paramTypes[] = "s";
         }
 
-        $stmt = $conn->prepare("INSERT INTO Products.". $table . " (" . implode(",", $columns) .") VALUES (". implode(",",$values) .")");
+        $stmt = $conn->prepare("INSERT INTO $this->dbName.". $table . " (" . implode(",", $columns) .") VALUES (". implode(",",$values) .")");
 
         $stmt->bind_param("". implode("", $paramTypes) ."", ...array_values($data) );
 
@@ -48,11 +51,13 @@ class Database{
         
     }
 
-    public function Find($table,$value){
-        $columns = $this->GetTableColumns($table);
+    // Looks for a given value in a particular table. If the value is found returns true;
+    public function find($table,$value)
+    {
+        $columns = $this->getTableColumns($table);
 
         $conn = new mysqli($this->servername, $this->username, $this->password);
-        $result = $conn->query("SELECT * FROM Products.". $table . " WHERE '$value' IN (". implode(",",$columns).")");
+        $result = $conn->query("SELECT * FROM $this->dbName.". $table . " WHERE '$value' IN (". implode(",",$columns).")");
 
         if($result->num_rows > 0){
             return true;
@@ -62,9 +67,11 @@ class Database{
         } 
     }
 
-    public function GetTableData($table){
+    // Gets all data from a given table;
+    public function getTableData($table)
+    {
         $conn = new mysqli($this->servername, $this->username, $this->password);
-        $sql = "SELECT * FROM Products.". $table ."";
+        $sql = "SELECT * FROM $this->dbName.". $table ."";
 
         $result = $conn->query($sql);
         while($row = $result->fetch_assoc()){
@@ -78,12 +85,13 @@ class Database{
         }
         return $rows;
     }
-
-    public function GetTableColumns($table){
+    // Gets all the column names of a given table;
+    public function getTableColumns($table)
+    {
         $conn = new mysqli($this->servername, $this->username, $this->password);
         $sql = "SELECT COLUMN_NAME
         FROM INFORMATION_SCHEMA.COLUMNS
-        WHERE TABLE_SCHEMA='Products'
+        WHERE TABLE_SCHEMA='$this->dbName'
             AND TABLE_NAME='$table'";
         
         $result = $conn->query($sql);
@@ -94,7 +102,9 @@ class Database{
         return $columns;
 
     }
-    public function GetTableKeyColumnName($table){
+    // Gets the name of primary key column for a table;
+    public function getTableKeyColumnName($table)
+    {
         $conn = new mysqli($this->servername, $this->username, $this->password);
         $sql = "SELECT COLUMN_NAME 
         FROM information_schema.KEY_COLUMN_USAGE 
@@ -104,22 +114,22 @@ class Database{
         $column = $result->fetch_assoc();
         return $column["COLUMN_NAME"];    
     }
-
-    public function DeleteByKey($table,$id)
+    // Deletes a record by primary key;
+    public function deleteByKey($table,$id)
     { 
         
-        $key = $this->GetTableKeyColumnName($table);
-            
-        $this->count = $this->count + 1; 
+        $key = $this->getTableKeyColumnName($table);
 
         $conn = new mysqli($this->servername, $this->username, $this->password);
-        $stmt = $conn->prepare("DELETE FROM Products.". $table . " WHERE ". $key ." = ? ");
+        $stmt = $conn->prepare("DELETE FROM $this->dbName.". $table . " WHERE ". $key ." = ? ");
         
         $stmt->bind_param("i", intval($id));
         
-        if ($stmt->execute() === true) {
+        if ($stmt->execute() === true) 
+        {
                 
-        } else {
+        } else 
+        {
             
         }
     
@@ -127,9 +137,11 @@ class Database{
     $conn->close();
 
     }
-    public function createTables($conn){
-        //create furniture table
-        $furnitureTable = "CREATE TABLE IF NOT EXISTS Products.Furniture (
+
+    public function createTables($conn)
+    {
+
+        $furnitureTable = "CREATE TABLE IF NOT EXISTS $this->dbName.Furniture (
             id int key AUTO_INCREMENT,
             sku varchar(25) NOT NULL ,
             name varchar(25) NOT NULL,
@@ -138,14 +150,14 @@ class Database{
             height varchar(25),
             length varchar(25)
         )";
-        $booksTable = "CREATE TABLE IF NOT EXISTS Products.Books (
+        $booksTable = "CREATE TABLE IF NOT EXISTS $this->dbName.Books (
             id int key AUTO_INCREMENT,
             sku varchar(25) NOT NULL ,
             name varchar(25) NOT NULL,
             price varchar(25) NOT NULL,
             weight varchar(25) 
         )";
-        $cdTable = "CREATE TABLE IF NOT EXISTS Products.CompactDiscs (
+        $cdTable = "CREATE TABLE IF NOT EXISTS $this->dbName.CompactDiscs (
             id int key AUTO_INCREMENT,
             sku varchar(25) NOT NULL ,
             name varchar(25) NOT NULL,

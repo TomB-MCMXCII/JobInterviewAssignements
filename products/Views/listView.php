@@ -18,9 +18,9 @@
                 </div>    
         </div>
         <form id="deleteProduct" action="list?f=massDelete" method="POST">
-            <div style="margin: auto;" class="row bookRow">
+            <div style="margin: auto;" class="row itemRow">
                 <?php foreach ($data["books"] as $key => $value) :?>
-                    <?php if($key == 1){echo "<div class=\"col\"></div>";}?>
+                    <?php if($key == 1){echo "<div class=\"fillerCol\"></div>";}?>
                     <div class="col-xl-3  item">
                         <div class="row">
                             <div class="col-2 checkBoxWrapper">
@@ -34,12 +34,12 @@
                             <p>Weight: <?php echo $value["weight"]; ?></p>
                         </div>
                     </div>
-                    <?php if($key == 1 || $key == 2){echo "<div class=\"col\"></div>";}?>
-                <?php endforeach?>
+                    <?php if($key == 1 || $key == 2){echo "<div class=\"fillerCol\"></div>";}?>
+                <?php endforeach?>                
             </div>
-            <div style="margin: auto;" class="row cdRow">
+            <div style="margin: auto;" class="row itemRow">
                 <?php foreach ($data["cd"] as $key => $value) :?>
-                    <?php if($key == 1){echo "<div class=\"col\"></div>";}?>
+                    <?php if($key == 1){echo "<div class=\"fillerCol\"></div>";}?>
                     <div class="col-xl-3 item">
                         <div class="row">
                             <div class="col-2 checkBoxWrapper">                      
@@ -53,12 +53,12 @@
                             <p>Size: <?php echo $value["size"]; ?></p>
                         </div>    
                     </div>
-                    <?php if($key == 1 || $key == 2){echo "<div class=\"col\"></div>";}?>
+                    <?php if($key == 1 || $key == 2){echo "<div class=\"fillerCol\"></div>";}?>
                 <?php endforeach?>
             </div>
-            <div style="margin: auto;" class="row mb-5 furnitureRow">
+            <div style="margin: auto;" class="row itemRow">
                 <?php foreach ($data["furniture"] as $key => $value) :?>
-                    <?php if($key == 1){echo "<div class=\"col\"></div>";}?>
+                    <?php if($key == 1){echo "<div class=\"fillerCol\"></div>";}?>
                     <div class="col-xl-3 item ">
                         <div class="row">
                             <div class="col-2 checkBoxWrapper">
@@ -72,7 +72,7 @@
                             <p>Dimension: <?php echo $value["width"];?>x<?php echo $value["length"]; ?>x<?php echo $value["height"]; ?></p>
                         </div>
                     </div>
-                    <?php if($key == 1 || $key == 2){echo "<div class=\"col\"></div>";}?>
+                    <?php if($key == 1 || $key == 2){echo "<div class=\"fillerCol\"></div>";}?>
                 <?php endforeach?>
             </div>
         </form>    

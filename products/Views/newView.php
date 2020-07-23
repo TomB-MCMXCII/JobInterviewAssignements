@@ -65,10 +65,13 @@
         var productType = document.querySelector('#productType option:checked').value;
         var sku = document.forms["newProductForm"]["sku"].value;
         var data = {type: productType, sku: sku};
-        if(productType == "noType"){
+        if(productType == "noType")
+        {
             showNoTypeError();
             return false;
-        }else{ 
+        }
+        else
+        { 
             $.ajax({
                 url : "new?f=skuExists",
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -76,11 +79,13 @@
                 data : {myData:data},
                 success: function(responseData, textStatus, jqXHR)
                 {
-                    
-                    if(responseData == 1){
+                    console.log(responseData);
+                    if(responseData == 1)
+                    {
                         showSkuExistsError();
                     }
-                    else if(responseData == 0){
+                    else if(responseData == 0)
+                    {
                                             
                         document.getElementById("newProductForm").submit();    
                     }  

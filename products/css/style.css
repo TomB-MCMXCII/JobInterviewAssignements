@@ -49,15 +49,7 @@
   height: 12rem;
 }
 
-.bookRow {
-  margin-top: 2% !important;
-}
-
-.cdRow {
-  margin-top: 2% !important;
-}
-
-.furnitureRow {
+.itemRow {
   margin-top: 2% !important;
 }
 
@@ -119,5 +111,15 @@ label {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+.fillerCol {
+  width: 80px;
+}
+
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) {
+  .fillerCol {
+    width: 63px;
+  }
 }
 /*# sourceMappingURL=style.css.map */

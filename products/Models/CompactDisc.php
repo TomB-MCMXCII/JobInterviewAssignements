@@ -1,32 +1,34 @@
 <?php
 require_once("database.php");
-class CompactDisc extends Product {
+class CompactDisc extends Product 
+{
     public $size;
     private $db;
     private $table = "CompactDiscs";
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->db = new Database();
     }
 
-    public function Insert($data)
+    public function insert($data)
     { 
         $newArray = array("sku"=>strtoupper($data["sku"]),"name"=>$data["name"],"price"=>$data["price"],"size"=>$data["size"]);
-        $this->db->Insert($this->table,$newArray);    
+        $this->db->insert($this->table,$newArray);    
     }
 
-    public function FindBySku($data){
-        return $this->db->Find($this->table,$data["sku"]);
+    public function findBySku($data){
+        return $this->db->find($this->table,$data["sku"]);
     }
 
-    public function GetCds()
+    public function getCds()
     {
-        return $this->db->GetTableData($this->table);
+        return $this->db->getTableData($this->table);
     }
 
-    public function DeleteById($id)
+    public function deleteById($id)
     {
-        $this->db->DeleteByKey($this->table,$id);
+        $this->db->deleteByKey($this->table,$id);
     }
 }
 ?>

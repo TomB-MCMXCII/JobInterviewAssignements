@@ -27,13 +27,7 @@
     border: 1px solid black;
     height:12rem;
 }
-.bookRow {
-    margin-top: 2%!important;
-}
-.cdRow {
-    margin-top: 2%!important;
-}
-.furnitureRow {
+.itemRow {
     margin-top: 2%!important;
 }
 #specialAttribute {
@@ -80,4 +74,15 @@ label {
 .itemContentRow {
     flex-flow: column;
     align-items: center;
+}
+.fillerCol {
+    width: 80px;
+}
+
+@media screen 
+  and (min-device-width: 1200px) 
+  and (max-device-width: 1600px) { 
+      .fillerCol{
+          width: 63px;
+      }
 }
